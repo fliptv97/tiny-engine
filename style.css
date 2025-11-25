@@ -1,0 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  margin: 0;
+  font-family: system-ui, monospace;
+  background: #191919;
+}
