@@ -11,6 +11,7 @@ class Game {
   #keys = {
     ArrowLeft: false,
     ArrowRight: false,
+    Space: false,
   };
   /** @type {Canvas} */
   #canvas;
@@ -32,15 +33,15 @@ class Game {
 
   init() {
     this.#canvas.node.addEventListener("keydown", (event) => {
-      if (!Object.hasOwn(this.#keys, event.key)) return;
+      if (!Object.hasOwn(this.#keys, event.code)) return;
 
-      this.#keys[event.key] = true;
+      this.#keys[event.code] = true;
     });
 
     this.#canvas.node.addEventListener("keyup", (event) => {
-      if (!Object.hasOwn(this.#keys, event.key)) return;
+      if (!Object.hasOwn(this.#keys, event.code)) return;
 
-      this.#keys[event.key] = false;
+      this.#keys[event.code] = false;
     });
   }
 }
