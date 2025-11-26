@@ -1,5 +1,5 @@
 import Canvas from "./engine/canvas.js";
-import Character from "./character.js";
+import Character, { JUMP_STRENGTH } from "./character.js";
 import GameState from "./game-state.js";
 
 function clamp(value, min, max) {
