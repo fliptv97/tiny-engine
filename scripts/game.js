@@ -2,6 +2,14 @@ import Canvas from "./engine/canvas.js";
 import Character from "./character.js";
 import GameState from "./game-state.js";
 
+function clamp(value, min, max) {
+  console.assert(typeof value === "number");
+  console.assert(typeof min === "number");
+  console.assert(typeof max === "number");
+
+  return Math.min(max, Math.max(min, value));
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = new Canvas(800, 600);
 
@@ -23,11 +31,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Logic
     character.update();
 
-    if (character.position.x < 0) {
-      character.position.x = 0;
-    } else if (character.position.x + character.width > canvas.width) {
-      character.position.x = canvas.width - character.width;
-    }
+    character.position.x = clamp(
+      character.position.x + character.velocity.x * character.speed,
+      0,
+      canvas.width - character.width
+    );
+    character.position.y = clamp(
+      character.position.y - character.velocity.y * JUMP_STRENGTH,
+      0,
+      canvas.height - character.height
+    );
 
     // Rendering
     canvas.fill("#333");
