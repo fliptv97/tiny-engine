@@ -1,0 +1,21 @@
+{
+  "name": "tiny-engine",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fliptv97/tiny-engine.git"
+  },
+  "author": "Philip Kazakov",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4"
+  }
+}

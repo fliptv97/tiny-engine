@@ -5,27 +5,22 @@ const GRAVITY = 0.9;
 export const JUMP_STRENGTH = 10;
 
 class Character {
-  /** @type {GameState} */
-  #gameState;
-  /** @type {number} */
-  #speed = 1.1;
-  /** @type {boolean} */
-  isGrounded = true;
-  /** @type {number} */
-  #width = 20;
-  /** @type {number} */
-  #height = 40;
-  /** @type {Vec2} */
-  position;
-  /** @type {Vec2} */
-  velocity = new Vec2(0, 0);
+  #gameState: GameState;
+  #speed: number;
+  #width: number;
+  #height: number;
+  isGrounded: boolean;
+  velocity: Vec2;
+  position: Vec2;
 
-  /** @param {Vec2} position */
-  constructor(gameState, position = new Vec2(0, 0)) {
-    console.assert(gameState instanceof GameState);
-    console.assert(position instanceof Vec2);
-
+  constructor(gameState: GameState, position = new Vec2(0, 0)) {
     this.#gameState = gameState;
+    this.#speed = 1.1;
+    this.#width = 20;
+    this.#height = 40;
+
+    this.isGrounded = true;
+    this.velocity = new Vec2(0, 0);
     this.position = position;
   }
 
@@ -46,14 +41,14 @@ class Character {
       this.velocity.y *= GRAVITY;
     }
 
-    if (this.#gameState.keys.Space && this.isGrounded) {
+    if (this.#gameState.keys.get("Space") && this.isGrounded) {
       this.velocity.y = 1;
       this.isGrounded = false;
     }
 
-    if (this.#gameState.keys.ArrowRight) {
+    if (this.#gameState.keys.get("ArrowRight")) {
       this.velocity.x = 1;
-    } else if (this.#gameState.keys.ArrowLeft) {
+    } else if (this.#gameState.keys.get("ArrowLeft")) {
       this.velocity.x = -1;
     } else {
       this.velocity.x = 0;
