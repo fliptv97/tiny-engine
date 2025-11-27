@@ -1,14 +1,7 @@
-import Canvas from "./engine/canvas.js";
 import Character, { JUMP_STRENGTH } from "./character.js";
+import Canvas from "./engine/canvas.js";
 import GameState from "./game-state.js";
-
-function clamp(value, min, max) {
-  console.assert(typeof value === "number");
-  console.assert(typeof min === "number");
-  console.assert(typeof max === "number");
-
-  return Math.min(max, Math.max(min, value));
-}
+import { clamp } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = new Canvas(800, 600);
@@ -34,12 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     character.position.x = clamp(
       character.position.x + character.velocity.x * character.speed,
       0,
-      canvas.width - character.width
+      canvas.width - character.width,
     );
     character.position.y = clamp(
       character.position.y - character.velocity.y * JUMP_STRENGTH,
       0,
-      canvas.height - character.height
+      canvas.height - character.height,
     );
 
     // Rendering
@@ -50,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       character.position.x,
       character.position.y,
       character.width,
-      character.height
+      character.height,
     );
 
     requestAnimationFrame(gameLoop);
