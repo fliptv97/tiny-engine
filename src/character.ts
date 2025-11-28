@@ -1,58 +1,66 @@
 import GameState from "./game-state.js";
-import Vec2 from "./engine/vec2.js";
 
-const GRAVITY = 0.9;
-export const JUMP_STRENGTH = 10;
+const GRAVITY = 1.2;
+const FRICTION = 0.75;
 
 class Character {
-  #gameState: GameState;
-  #speed: number;
-  #width: number;
-  #height: number;
-  isGrounded: boolean;
-  velocity: Vec2;
-  position: Vec2;
+  static JUMP_STRENGTH = 20;
+  static WIDTH = 20;
+  static HEIGHT = 40;
+  static SPEED = 2.75;
 
-  constructor(gameState: GameState, position = new Vec2(0, 0)) {
-    this.#gameState = gameState;
-    this.#speed = 1.1;
-    this.#width = 20;
-    this.#height = 40;
+  private _speedX = 0;
+  private _speedY = 0;
 
-    this.isGrounded = true;
-    this.velocity = new Vec2(0, 0);
-    this.position = position;
+  constructor(
+    private _positionX: number,
+    private _positionY: number,
+    private _gameState: GameState,
+  ) {}
+
+  get positionX() {
+    return this._positionX;
   }
 
-  get speed() {
-    return this.#speed;
+  get positionY() {
+    return this._positionY;
   }
 
-  get width() {
-    return this.#width;
+  move(deltaX: number, deltaY: number) {
+    this._positionX += deltaX;
+    this._positionY += deltaY;
   }
 
-  get height() {
-    return this.#height;
+  accelerate(accelerationX: number, accelerationY: number) {
+    this._speedX += accelerationX;
+    this._speedY += accelerationY;
   }
 
   update() {
-    if (!this.isGrounded) {
-      this.velocity.y *= GRAVITY;
+    // Hotfix, so that character doesn't go outside of screen
+    if (this._positionY >= 560) {
+      this._speedY = 0;
+      this._positionY = 560;
     }
 
-    if (this.#gameState.keys.get("Space") && this.isGrounded) {
-      this.velocity.y = 1;
-      this.isGrounded = false;
+    // Input handlers
+    if (this._gameState.keys.get("Space") && this._speedY === 0) {
+      this._speedY -= Character.JUMP_STRENGTH;
     }
 
-    if (this.#gameState.keys.get("ArrowRight")) {
-      this.velocity.x = 1;
-    } else if (this.#gameState.keys.get("ArrowLeft")) {
-      this.velocity.x = -1;
-    } else {
-      this.velocity.x = 0;
+    if (this._gameState.keys.get("ArrowRight")) {
+      this._speedX = Character.SPEED;
+    } else if (this._gameState.keys.get("ArrowLeft")) {
+      this._speedX = -Character.SPEED;
     }
+
+    // Core
+    this.move(this._speedX, this._speedY);
+
+    this._speedX *= FRICTION;
+    this._speedY *= FRICTION;
+
+    this.accelerate(0, GRAVITY);
   }
 }
 

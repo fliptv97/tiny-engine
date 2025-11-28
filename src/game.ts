@@ -1,7 +1,6 @@
-import Character, { JUMP_STRENGTH } from "./character.js";
+import Character from "./character.js";
 import Canvas from "./engine/canvas.js";
 import GameState from "./game-state.js";
-import { clamp } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = new Canvas(800, 600);
@@ -13,37 +12,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   gameState.init();
 
-  const character = new Character(gameState);
-
-  character.position.x = 20;
-  character.position.y = canvas.height - character.height;
+  const character = new Character(
+    20,
+    canvas.height - Character.HEIGHT,
+    gameState,
+  );
 
   canvas.node.focus();
 
   requestAnimationFrame(function gameLoop() {
-    // Logic
     character.update();
 
-    character.position.x = clamp(
-      character.position.x + character.velocity.x * character.speed,
-      0,
-      canvas.width - character.width,
-    );
-    character.position.y = clamp(
-      character.position.y - character.velocity.y * JUMP_STRENGTH,
-      0,
-      canvas.height - character.height,
-    );
-
-    // Rendering
     canvas.fill("#333");
 
+    // Draw character
     canvas.ctx.fillStyle = "#f00";
     canvas.ctx.fillRect(
-      character.position.x,
-      character.position.y,
-      character.width,
-      character.height,
+      character.positionX,
+      character.positionY,
+      Character.WIDTH,
+      Character.HEIGHT,
     );
 
     requestAnimationFrame(gameLoop);
